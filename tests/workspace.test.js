@@ -33,3 +33,11 @@ test('money output respects selected currency',()=>{
  assert.match(money(1250,{currency:'PHP'}),/₱/);
  assert.match(money(1250,{currency:'USD'}),/\$/);
 });
+test('command palette filters pages by label or id and keeps order',async()=>{
+ const {matchPages}=await import('../src/palette.js');
+ const pages=[['dashboard','Overview','▦'],['tracker','Time & work','◷'],['settings','Settings','⚙']];
+ assert.deepEqual(matchPages(pages,'').map(p=>p[0]),['dashboard','tracker','settings']);
+ assert.deepEqual(matchPages(pages,'  TIME ').map(p=>p[0]),['tracker']);
+ assert.deepEqual(matchPages(pages,'dash').map(p=>p[0]),['dashboard']);
+ assert.deepEqual(matchPages(pages,'zzz'),[]);
+});

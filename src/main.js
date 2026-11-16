@@ -1,6 +1,7 @@
 import './style.css';
 import {loadData,saveData,sample,id,clean,escapeHTML as h,regions,displayTime,displayDate,displayZone,elapsedTimer,timeString,exportEntries,downloadFile,validateImport} from './data.js';
 import {navigation,renderSidebar,pageContent} from './modules.js';
+import {createPalette} from './palette.js';
 
 const state={data:loadData(),page:(location.hash.slice(1)||'dashboard'),pitch:{},pitchDraft:'',offer:{},offerDraft:'',review:null,contentInput:'',knowledgeQuery:'',knowledgeAnswer:''};
 if(!navigation.some(n=>n[0]===state.page))state.page='dashboard';
@@ -19,7 +20,7 @@ function appHeader(){
  const now=new Date(),zone=state.data.settings.timezone;
  return '<header class="topbar"><button type="button" class="menu-toggle" data-action="menu" aria-label="Open navigation" aria-expanded="false">☰</button>'+
  '<div class="breadcrumbs"><span>WORKSPACE</span><span class="sep">/</span><strong>'+h(navigation.find(x=>x[0]===state.page)?.[1]||'Overview')+'</strong></div>'+
- '<div class="topbar-right"><span class="top-status"><span class="online-dot"></span> DEMO WORKSPACE</span>'+
+ '<div class="topbar-right"><button class="search-trigger" type="button" data-action="palette" aria-label="Open page search" aria-keyshortcuts="Control+K Meta+K"><span aria-hidden="true">⌕</span><span>Search</span><kbd>Ctrl K</kbd></button><span class="top-status"><span class="online-dot"></span> DEMO WORKSPACE</span>'+
  '<button class="clock-widget" type="button" data-action="clock" aria-expanded="false" aria-controls="clockPanel" aria-label="View live world clocks"><span class="clock-icon">◷</span><span class="clock-text"><small>YOUR TIME</small><strong id="localClock">'+displayTime(zone,now)+'</strong></span><span class="clock-separator"></span><span class="clock-text"><small>NEW YORK · ET</small><strong id="eastClock">'+displayTime('America/New_York',now)+'</strong></span><span class="clock-drop">⌄</span></button>'+
  '<div class="top-avatar">'+h(state.data.settings.name.split(' ').map(x=>x[0]).slice(0,2).join('').toUpperCase())+'</div></div></header>';
 }
@@ -114,6 +115,7 @@ app.addEventListener('click',async(e)=>{
  const action=e.target.closest('[data-action]');if(!action)return;
  const name=action.dataset.action;
  if(['start-timer','pause-timer','save-timer','reset-timer'].includes(name)){handleTimer(name);return}
+ if(name==='palette'){palette.open();return}
  if(name==='csv-entries'){exportEntries(state.data);notify('CSV download prepared')}
  if(name==='menu'){const sidebar=document.getElementById('sidebar');const scrim=document.getElementById('mobileScrim');sidebar.classList.toggle('open');scrim.hidden=!sidebar.classList.contains('open');action.setAttribute('aria-expanded',String(sidebar.classList.contains('open')))}
  if(name==='close-menu'){document.getElementById('sidebar').classList.remove('open');document.getElementById('mobileScrim').hidden=true}
@@ -170,4 +172,5 @@ document.addEventListener('pointerdown',e=>{
 });
 window.addEventListener('hashchange',()=>{const page=location.hash.slice(1);if(navigation.some(n=>n[0]===page)){state.page=page;render()}});
 document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateClocks()});
+const palette=createPalette(navigation,nav);
 render();setInterval(updateClocks,1000);

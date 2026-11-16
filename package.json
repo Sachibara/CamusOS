@@ -7,7 +7,7 @@
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "node --check src/main.js && node --check src/data.js && node --check src/modules.js",
+    "check": "node --check src/main.js && node --check src/data.js && node --check src/modules.js && node --check src/palette.js",
     "test": "node --test"
   },
   "devDependencies": {

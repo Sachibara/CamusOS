@@ -14,6 +14,8 @@ A personal, independently developed operations studio by Jim Camus. **Not affili
 - **Connections:** explicit "not connected" integration status (no fake connections).
 - **Settings:** identity, time zone, hourly rate, currency, JSON import/export/reset.
 - **Global:** client-side persistence, responsive navigation, theme choice, live regional and local clocks, reduced-motion accommodation.
+- **Page search:** press `Ctrl K` / `⌘ K` (or the Search button) to jump to any page from the keyboard.
+- **Self-hosted fonts:** Barlow Condensed, DM Sans and DM Mono are served from `public/fonts/` (SIL Open Font License), so the app makes no third-party requests.
 
 **Privacy:** Data stays in this browser's local storage. It is not synced across devices. Avoid entering sensitive information. AI-style writing features are transparent local templates/heuristics, not connected to a paid AI model.
 
@@ -34,7 +36,7 @@ npm run build
 
 ## Architecture
 
-`src/data.js`: local storage and format helpers; `src/modules.js`: modules/view rendering; `src/main.js`: navigation, events, and boot; `src/style.css`: original design system.
+`src/data.js`: local storage and format helpers; `src/modules.js`: modules/view rendering; `src/main.js`: navigation, events, and boot; `src/palette.js`: command palette; `src/style.css`: original design system.
 
 ## Security and ownership
 
